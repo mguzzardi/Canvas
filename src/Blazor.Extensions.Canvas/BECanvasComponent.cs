@@ -11,6 +11,8 @@ namespace Blazor.Extensions
 
         [Parameter]
         public long Width { get; set; }
+        [Parameter]
+        public string CssClass { get; set; }
 
         protected readonly string Id = Guid.NewGuid().ToString();
         protected ElementReference _canvasRef;
