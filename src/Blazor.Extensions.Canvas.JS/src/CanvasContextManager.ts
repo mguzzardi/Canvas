@@ -1,6 +1,7 @@
 export class ContextManager {
   private readonly contexts = new Map<string, any>();
   private readonly webGLObject = new Array<any>();
+  private readonly imageDataBuffer = new Array<any>();
   private readonly contextName: string;
   private webGLContext = false;
   private readonly prototypes: any;
@@ -86,6 +87,10 @@ export class ContextManager {
   }
 
   private deserialize = (method: string, object: any) => {
+    if (method === "putImageData" && object.data != undefined  ) {
+      let newImageData = new ImageData(Uint8ClampedArray.from(object.data), object.width, object.height);
+      return newImageData; 
+    }
     if (!this.webGLContext || object == undefined) return object; //deserialization only needs to happen for webGL
 
     if (object.hasOwnProperty("webGLType") && object.hasOwnProperty("id")) {
@@ -107,6 +112,14 @@ export class ContextManager {
   private serialize = (object: any) => {
     if (object instanceof TextMetrics) {
         return { width: object.width };
+    }
+    if (object instanceof ImageData) {
+
+      return {
+        width: object.width,
+        height: object.height,
+        data: Object.assign([], object.data)
+      };
     }
 
     if (!this.webGLContext || object == undefined) return object; //serialization only needs to happen for webGL

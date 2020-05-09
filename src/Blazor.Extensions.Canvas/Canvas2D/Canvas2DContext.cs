@@ -54,6 +54,9 @@ namespace Blazor.Extensions.Canvas.Canvas2D
         private const string RESTORE_METHOD = "restore";
         private const string DRAW_IMAGE_METHOD = "drawImage";
         private const string GLOBAL_COMPOSITE_OPERATION_PROPERTY = "globalCompositeOperation";
+        private const string GET_DATA_IMAGE_METHOD = "getImageData";
+        private const string PUT_DATA_IMAGE_METHOD = "putImageData";
+        private const string CREATE_IMAGE_DATA_METHOD = "createImageData";
         #endregion
 
         #region Properties
@@ -330,6 +333,13 @@ namespace Blazor.Extensions.Canvas.Canvas2D
         public async Task DrawImageAsync(ElementReference elementReference, double dx, double dy) => await this.BatchCallAsync(DRAW_IMAGE_METHOD, isMethodCall: true, elementReference, dx, dy);
         public async Task DrawImageAsync(ElementReference elementReference, double dx, double dy, double dWidth, double dHeight) => await this.BatchCallAsync(DRAW_IMAGE_METHOD, isMethodCall: true, elementReference, dx, dy, dWidth, dHeight);
         public async Task DrawImageAsync(ElementReference elementReference, double sx, double sy, double sWidth, double sHeight, double dx, double dy, double dWidth, double dHeight) => await this.BatchCallAsync(DRAW_IMAGE_METHOD, isMethodCall: true, elementReference, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        
+        public async Task<ImageData> CreateImageDataAsync(double width, double height) => await this.CallMethodAsync<ImageData>(CREATE_IMAGE_DATA_METHOD, width, height);
+        public async Task<ImageData> CreateImageDataAsync(ImageData imagedata) => await this.CallMethodAsync<ImageData>(CREATE_IMAGE_DATA_METHOD, imagedata);
+
+        public async Task<ImageData> GetImageDataAsync(double sx, double sy, double sw, double sh) => await this.CallMethodAsync<ImageData>(GET_DATA_IMAGE_METHOD, sx, sy, sw, sh);
+        public async Task PutImageDataAsync(ImageData imageData, double dx, double dy) => await this.BatchCallAsync(PUT_DATA_IMAGE_METHOD, isMethodCall: true, imageData, dx, dy); 
+        public async Task PutImageDataAsync(ImageData imageData, double dx, double dy, double dirtyX, double dirtyY, double dirtyWidth, double dirtyHeight) => await this.BatchCallAsync(PUT_DATA_IMAGE_METHOD, isMethodCall: true, imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
 
         #endregion Methods
     }
